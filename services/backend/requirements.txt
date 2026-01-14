@@ -1,0 +1,8 @@
+django==5.1
+django-environ==0.11.2
+psycopg2-binary==2.9.9
+pillow==10.2.0
+yookassa==3.3.0
+celery==5.4.0
+redis==5.0.1
+django-filter==24.2
