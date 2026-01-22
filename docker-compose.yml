@@ -3,10 +3,12 @@ services:
     image: postgres:16-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    env_file:
-      - .env
+    environment:
+      - POSTGRES_DB=blur_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -20,11 +22,10 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - ./services/backend:/app
-      - ./media:/app/media
     ports:
       - "8000:8000"
     env_file:
-      - .env
+      - ./services/backend/.env
     depends_on:
       db:
         condition: service_healthy
@@ -38,7 +39,7 @@ services:
     volumes:
       - ./services/backend:/app
     env_file:
-      - .env
+      - ./services/backend/.env
     depends_on:
       - db
       - redis

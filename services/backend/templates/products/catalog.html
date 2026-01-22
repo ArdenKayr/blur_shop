@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="mb-16 rounded-none md:rounded-2xl overflow-hidden shadow-2xl relative bg-gray-100 group h-[400px] md:h-[500px]" 
+     x-data="{ activeSlide: 0, slides: {{ carousel_items.count|default:0 }}, timer: null }"
+     x-init="timer = setInterval(() => { activeSlide = activeSlide === slides - 1 ? 0 : activeSlide + 1 }, 6000)"
+     @mouseenter="clearInterval(timer)"
+     @mouseleave="timer = setInterval(() => { activeSlide = activeSlide === slides - 1 ? 0 : activeSlide + 1 }, 6000)">
+
+    {% if carousel_items %}
+        <div class="relative h-full w-full">
+            {% for item in carousel_items %}
+                <div x-show="activeSlide === {{ forloop.counter0 }}" 
+                     class="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+                     x-transition:enter="opacity-0"
+                     x-transition:enter-end="opacity-100"
+                     x-transition:leave="opacity-100"
+                     x-transition:leave-end="opacity-0">
+                    
+                    <a href="{{ item.link|default:'#' }}" class="block h-full w-full">
+                        <img src="{{ item.image.url }}" alt="{{ item.title }}" class="w-full h-full object-cover">
+                    </a>
+                    
+                    {% if item.title %}
+                    <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
+                        <div class="text-center">
+                            <h2 class="text-white text-4xl md:text-6xl font-serif font-bold drop-shadow-lg mb-4 opacity-0 translate-y-4 transition-all duration-700 delay-300"
+                                :class="activeSlide === {{ forloop.counter0 }} ? '!opacity-100 !translate-y-0' : ''">
+                                {{ item.title }}
+                            </h2>
+                            <button class="bg-white text-gray-900 px-8 py-3 uppercase tracking-widest text-xs font-bold hover:bg-rosegold hover:text-white transition duration-300">
+                                Подробнее
+                            </button>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+        
+        <button @click="activeSlide = activeSlide === 0 ? slides - 1 : activeSlide - 1" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition p-4">
+            <i class="fa-thin fa-chevron-left text-4xl"></i>
+        </button>
+        <button @click="activeSlide = activeSlide === slides - 1 ? 0 : activeSlide + 1" class="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition p-4">
+            <i class="fa-thin fa-chevron-right text-4xl"></i>
+        </button>
+
+    {% else %}
+        <div class="h-full w-full bg-[#E5DCD9] flex flex-col items-center justify-center text-center px-4 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+            <h1 class="font-serif text-6xl md:text-8xl text-gray-800 mb-4 z-10">Blur<span class="text-rosegold">.</span></h1>
+            <p class="text-gray-600 uppercase tracking-[0.3em] text-sm md:text-base mb-8 z-10">Эстетика вашего ухода</p>
+        </div>
+    {% endif %}
+</div>
+
+<div class="text-center mb-12">
+    <h2 class="font-serif text-3xl md:text-4xl text-gray-800 mb-3">Наши продукты</h2>
+    <div class="h-0.5 w-16 bg-rosegold mx-auto"></div>
+</div>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
+    {% for product in products %}
+    <div class="group flex flex-col">
+        <div class="relative aspect-[4/5] bg-white border border-gray-100 mb-4 overflow-hidden">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" 
+                     alt="{{ product.name }}" 
+                     class="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-700 ease-out">
+            {% else %}
+                <div class="w-full h-full flex items-center justify-center bg-gray-50 text-gray-300 text-xs tracking-widest uppercase">
+                    No Image
+                </div>
+            {% endif %}
+            
+            {% if is_pro %}
+                <div class="absolute top-0 left-0 bg-rosegold text-white text-[10px] font-bold px-3 py-1.5 uppercase tracking-wider">
+                    Pro
+                </div>
+            {% endif %}
+
+            <button class="absolute bottom-0 left-0 w-full bg-rosegold text-white py-3 uppercase text-xs font-bold tracking-widest translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                В корзину
+            </button>
+        </div>
+
+        <div class="text-center">
+            <h3 class="font-serif text-lg text-gray-800 mb-1 group-hover:text-rosegold transition-colors cursor-pointer">
+                {{ product.name }}
+            </h3>
+            <p class="text-gray-400 text-xs mb-3 line-clamp-1">{{ product.description }}</p>
+            
+            <div class="flex items-center justify-center space-x-3">
+                {% if is_pro %}
+                    <span class="text-gray-300 line-through text-sm">{{ product.price_retail }} ₽</span>
+                    <span class="text-rosegold font-bold text-lg">{{ product.price_pro }} ₽</span>
+                {% else %}
+                    <span class="text-gray-800 font-bold text-lg">{{ product.price_retail }} ₽</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-span-full py-20 text-center">
+        <p class="text-gray-400 font-serif text-xl italic">Коллекция обновляется...</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

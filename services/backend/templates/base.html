@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blur — Профессиональная косметика</title>
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        rosegold: {
+                            DEFAULT: '#D49E8D', // Базовый цвет из лого
+                            dark: '#B57F6E',    // Для ховера
+                            light: '#F5EBE8',   // Для фона
+                        },
+                        gray: {
+                            800: '#374151',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-serif { font-family: 'Playfair Display', serif; }
+    </style>
+</head>
+<body class="bg-[#FDFCFB] text-gray-800 flex flex-col min-h-screen">
+
+    <div class="bg-rosegold-light py-2 border-b border-rosegold/20">
+        <div class="container mx-auto px-4 flex justify-between items-center text-xs font-medium text-gray-600 uppercase tracking-widest">
+            <div class="space-x-6">
+                <a href="#" class="hover:text-rosegold transition">О бренде</a>
+                <a href="#" class="hover:text-rosegold font-bold text-rosegold-dark uppercase">Косметологам</a>
+            </div>
+            <div class="space-x-4">
+                <a href="#" class="hover:text-rosegold transition"><i class="fa-solid fa-file-pdf mr-1"></i> Прайс-лист</a>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            
+            <a href="/" class="flex items-center group">
+                <img src="/media/logo.png" alt="Blur Logo" class="h-12 w-auto object-contain group-hover:opacity-80 transition">
+                <span class="ml-3 text-2xl font-serif font-bold text-gray-800 tracking-wide group-hover:text-rosegold transition hidden md:block">
+                    Blur<span class="text-rosegold">.</span>
+                </span>
+            </a>
+
+            <div class="hidden md:flex flex-1 mx-12 max-w-lg">
+                <div class="relative w-full group">
+                    <input type="text" placeholder="Поиск средств..." 
+                           class="w-full bg-rosegold-light/30 border border-transparent group-hover:border-rosegold/30 rounded-full py-2 px-5 text-sm focus:ring-1 focus:ring-rosegold focus:bg-white outline-none transition-all placeholder-gray-400">
+                    <button class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 group-hover:text-rosegold transition">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-8">
+                <a href="/admin/" class="flex flex-col items-center text-gray-500 hover:text-rosegold transition group">
+                    <i class="fa-thin fa-user text-xl mb-0.5"></i> <i class="fa-regular fa-user text-xl mb-0.5"></i>
+                </a>
+                <a href="#" class="flex flex-col items-center text-gray-500 hover:text-rosegold transition relative group">
+                    <i class="fa-solid fa-bag-shopping text-xl mb-0.5"></i>
+                    <span class="absolute -top-1.5 -right-2 bg-rosegold text-white text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold">0</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="container mx-auto px-4 flex justify-center space-x-10 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-500 py-3">
+            <a href="/" class="hover:text-rosegold transition-colors relative group">
+                Каталог
+                <span class="absolute -bottom-1 left-0 w-0 h-px bg-rosegold transition-all group-hover:w-full"></span>
+            </a>
+            <a href="#" class="hover:text-rosegold transition-colors relative group">
+                Лицо
+                <span class="absolute -bottom-1 left-0 w-0 h-px bg-rosegold transition-all group-hover:w-full"></span>
+            </a>
+            <a href="#" class="hover:text-rosegold transition-colors relative group">
+                Тело
+                <span class="absolute -bottom-1 left-0 w-0 h-px bg-rosegold transition-all group-hover:w-full"></span>
+            </a>
+            <a href="#" class="hover:text-rosegold transition-colors relative group">
+                Наборы
+                <span class="absolute -bottom-1 left-0 w-0 h-px bg-rosegold transition-all group-hover:w-full"></span>
+            </a>
+        </div>
+    </nav>
+
+    <main class="flex-grow container mx-auto px-4 py-8">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="bg-[#2D2D2D] text-white py-12 mt-auto">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
+            <div>
+                <h4 class="font-serif text-xl mb-4 text-rosegold">Blur Cosmetics</h4>
+                <p class="text-gray-400 leading-relaxed">Профессиональный уход для вашей кожи. <br>Инновации и эстетика в каждом флаконе.</p>
+            </div>
+            <div>
+                <h4 class="font-bold uppercase tracking-widest mb-4 text-xs text-gray-400">Покупателям</h4>
+                <ul class="space-y-2 text-gray-300">
+                    <li><a href="#" class="hover:text-rosegold transition">Доставка и оплата</a></li>
+                    <li><a href="#" class="hover:text-rosegold transition">Возврат</a></li>
+                    <li><a href="#" class="hover:text-rosegold transition">Стать партнером</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold uppercase tracking-widest mb-4 text-xs text-gray-400">Контакты</h4>
+                <p class="text-gray-300">Moscow, Russia</p>
+                <p class="text-gray-300 mt-2">+7 (999) 000-00-00</p>
+                <div class="mt-4 space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-rosegold transition"><i class="fa-brands fa-instagram text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-rosegold transition"><i class="fa-brands fa-telegram text-xl"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="border-t border-gray-700 mt-10 pt-6 text-center text-xs text-gray-500">
+            &copy; 2024 Blur Cosmetics. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+</html>
