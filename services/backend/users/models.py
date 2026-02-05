@@ -5,7 +5,10 @@ from django.conf import settings
 import os
 
 # Приватное хранилище для документов
-protected_storage = FileSystemStorage(location=os.path.join(settings.BASE_DIR, 'protected_media'))
+protected_storage = FileSystemStorage(
+    location=os.path.join(settings.BASE_DIR, 'protected_media'),
+    base_url='/protected_media/'
+)
 
 class User(AbstractUser):
     STATUS_CHOICES = (

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-12">
+    
+    <div class="text-center mb-16">
+        <span class="text-xs font-bold text-rosegold uppercase tracking-[0.2em] mb-4 block">Наша философия</span>
+        <h1 class="text-4xl md:text-5xl font-serif font-bold text-gray-900 leading-tight">
+            О бренде <span class="text-rosegold">BLYUR</span>
+        </h1>
+        <div class="w-24 h-1 bg-gray-100 mx-auto mt-8 rounded-full"></div>
+    </div>
+
+    <div class="bg-white p-8 md:p-12 rounded-2xl shadow-xl shadow-rosegold/5 border border-gray-50 relative overflow-hidden">
+        
+        <i class="fa-solid fa-leaf absolute -top-10 -right-10 text-[150px] text-rosegold/5 rotate-12"></i>
+
+        <div class="relative z-10 space-y-8 text-lg text-gray-600 font-light leading-relaxed">
+            
+            <p class="first-letter:text-5xl first-letter:font-serif first-letter:text-rosegold first-letter:float-left first-letter:mr-3 first-letter:mt-[-10px]">
+                Приветствуем Вас на сайте компании 
+                <strong class="text-gray-900 font-medium">BLYUR cosmetics</strong>!
+            </p>
+
+            <p>
+                <span class="font-serif text-gray-900 italic">BLYUR</span> — это онлайн-магазин, специализирующийся на профессиональной ухаживающей косметике и косметевтике для кожи лица, тела и волос.
+            </p>
+
+            <div class="border-l-4 border-rosegold pl-6 py-2 my-8 bg-rosegold/5 rounded-r-lg">
+                <p class="text-gray-800 italic">
+                    В BLYUR вы сможете найти средства для решения различных косметологических задач, от борьбы с морщинами до устранения целлюлита.
+                </p>
+            </div>
+
+            <p>
+                Вся продукция, представленная в BLYUR, <span class="text-rosegold font-medium">сертифицирована</span> и имеет необходимые декларации о соответствии, поэтому ее можно использовать как в домашних условиях, так и в салонах красоты, клиниках и медицинских учреждениях.
+            </p>
+
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 pt-12 border-t border-gray-100">
+            <div class="text-center">
+                <i class="fa-solid fa-certificate text-2xl text-rosegold mb-3"></i>
+                <h4 class="font-bold text-gray-900 text-sm uppercase tracking-wide">Сертифицировано</h4>
+            </div>
+            <div class="text-center">
+                <i class="fa-solid fa-flask text-2xl text-rosegold mb-3"></i>
+                <h4 class="font-bold text-gray-900 text-sm uppercase tracking-wide">Профессионально</h4>
+            </div>
+            <div class="text-center">
+                <i class="fa-solid fa-spa text-2xl text-rosegold mb-3"></i>
+                <h4 class="font-bold text-gray-900 text-sm uppercase tracking-wide">Эффективно</h4>
+            </div>
+        </div>
+
+    </div>
+    
+    <div class="text-center mt-12">
+        <a href="{% url 'catalog' %}" class="inline-block bg-gray-900 hover:bg-rosegold text-white font-bold py-4 px-10 rounded-full transition uppercase text-xs tracking-widest shadow-lg hover:shadow-xl hover:-translate-y-1">
+            Перейти в каталог
+        </a>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex items-center justify-center min-h-[60vh]">
+    <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
+        
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-serif font-bold text-gray-900 mb-2">Вход</h2>
+            <p class="text-gray-500 text-sm">Войдите, чтобы управлять заказами</p>
+        </div>
+
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+                <div class="bg-red-50 text-red-500 text-sm p-4 rounded-lg mb-4 text-center">
+                    Неверный логин/email или пароль.
+                </div>
+            {% endif %}
+
+            <div>
+                <label class="block text-xs font-bold text-gray-700 uppercase tracking-widest mb-2">Логин или Email</label>
+                <input type="text" name="username" required autofocus
+                       class="w-full bg-gray-50 border border-gray-200 rounded-lg py-3 px-4 focus:outline-none focus:border-rosegold focus:ring-1 focus:ring-rosegold transition">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-gray-700 uppercase tracking-widest mb-2">Пароль</label>
+                <input type="password" name="password" required 
+                       class="w-full bg-gray-50 border border-gray-200 rounded-lg py-3 px-4 focus:outline-none focus:border-rosegold focus:ring-1 focus:ring-rosegold transition">
+            </div>
+
+            <button type="submit" class="w-full bg-gray-900 hover:bg-rosegold text-white font-bold py-4 rounded-lg transition uppercase text-xs tracking-widest shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                Войти
+            </button>
+        </form>
+
+        <div class="mt-8 text-center text-sm text-gray-500">
+            Нет аккаунта? 
+            <a href="{% url 'register' %}" class="text-rosegold font-bold hover:underline">Зарегистрироваться</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

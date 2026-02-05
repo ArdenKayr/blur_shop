@@ -1,63 +1,78 @@
 from django.db import models
 
-class FilterGroup(models.Model):
-    """Группы фильтров, например: 'Тип кожи', 'Бренд'"""
-    name = models.CharField(max_length=100, verbose_name="Название группы")
+class Category(models.Model):
+    """Разделы каталога (меню)"""
+    name = models.CharField("Название раздела", max_length=100)
+    slug = models.SlugField("URL (ссылка)", unique=True, help_text="Например: face, body, sets")
+    order = models.PositiveIntegerField("Порядок вывода", default=0, help_text="Чем меньше число, тем левее в меню")
 
     class Meta:
-        verbose_name = "Группа фильтров"
-        verbose_name_plural = "Группы фильтров"
+        verbose_name = "Раздел (Категория)"
+        verbose_name_plural = "Разделы (Категории)"
+        ordering = ['order', 'name']
 
     def __str__(self):
         return self.name
 
-class FilterValue(models.Model):
-    """Значения фильтров, например: 'Сухая', 'Жирная'"""
-    group = models.ForeignKey(FilterGroup, on_delete=models.CASCADE, related_name='values', verbose_name="Группа")
-    value = models.CharField(max_length=100, verbose_name="Значение")
+class FilterGroup(models.Model):
+    name = models.CharField("Название группы", max_length=100) # Например "Объем", "Тип кожи"
+    
+    def __str__(self):
+        return self.name
+    class Meta:
+        verbose_name = "Группа фильтров"
+        verbose_name_plural = "Группы фильтров"
 
+class FilterValue(models.Model):
+    group = models.ForeignKey(FilterGroup, on_delete=models.CASCADE, related_name='values')
+    value = models.CharField("Значение", max_length=100) # Например "50 мл", "Сухая"
+
+    def __str__(self):
+        return f"{self.group.name}: {self.value}"
     class Meta:
         verbose_name = "Значение фильтра"
         verbose_name_plural = "Значения фильтров"
 
-    def __str__(self):
-        return f"{self.group.name}: {self.value}"
-
 class Product(models.Model):
-    """Модель товара с двумя типами цен"""
-    name = models.CharField(max_length=255, verbose_name="Название товара")
-    description = models.TextField(verbose_name="Описание")
+    # Добавили связь с категорией
+    category = models.ForeignKey(
+        Category, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True, 
+        related_name='products',
+        verbose_name="Раздел"
+    )
     
-    # Розничная цена и цена для косметологов
-    price_retail = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена (розница)")
-    price_pro = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена (для косметологов)")
+    name = models.CharField("Название", max_length=200)
+    description = models.TextField("Описание", blank=True)
+    price_retail = models.DecimalField("Цена (Розница)", max_digits=10, decimal_places=2)
+    price_pro = models.DecimalField("Цена (ПРО)", max_digits=10, decimal_places=2)
     
-    stock = models.PositiveIntegerField(default=0, verbose_name="Остаток на складе")
-    image = models.ImageField(upload_to='products/', verbose_name="Изображение товара")
+    image = models.ImageField("Фото товара", upload_to='products/', blank=True, null=True)
     
-    # Связь с фильтрами (Многие-ко-многим)
-    filters = models.ManyToManyField(FilterValue, blank=True, related_name='products', verbose_name="Фильтры")
-
+    is_new = models.BooleanField("Новинка", default=True)
+    
+    filters = models.ManyToManyField(FilterValue, blank=True, verbose_name="Характеристики")
+    
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = "Товар"
         verbose_name_plural = "Товары"
+        ordering = ['-created_at']
 
     def __str__(self):
         return self.name
+
 class CarouselItem(models.Model):
-    """Слайды для главной страницы"""
-    title = models.CharField("Заголовок (для админки)", max_length=100, blank=True)
-    image = models.ImageField("Изображение баннера", upload_to='carousel/')
-    link = models.CharField("Ссылка", max_length=255, blank=True, help_text="Например: / или https://google.com")
-    order = models.PositiveIntegerField("Порядок отображения", default=0)
-    is_active = models.BooleanField("Активен", default=True)
+    title = models.CharField("Заголовок", max_length=100)
+    description = models.TextField("Описание", blank=True)
+    image = models.ImageField("Картинка слайда", upload_to='carousel/')
+    link = models.CharField("Ссылка при клике", max_length=200, blank=True)
+    order = models.PositiveIntegerField("Порядок", default=0)
 
     class Meta:
         verbose_name = "Слайд карусели"
         verbose_name_plural = "Слайды карусели"
         ordering = ['order']
-
-    def __str__(self):
-        return self.title or f"Слайд {self.id}"

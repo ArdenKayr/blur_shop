@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-100 my-10">
+    <div class="text-center mb-8">
+        <h2 class="font-serif text-3xl text-gray-800 mb-2">Стать партнером</h2>
+        <p class="text-xs text-gray-500 uppercase tracking-widest">Загрузите фото диплома</p>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" class="space-y-6" x-data="{ fileName: '' }">
+        {% csrf_token %}
+        
+        <div>
+            <div class="relative border-2 border-dashed rounded-lg p-8 text-center transition group cursor-pointer"
+                 :class="fileName ? 'border-green-500 bg-green-50' : 'border-gray-300 hover:border-rosegold'">
+                
+                <input type="file" 
+                       name="license_photo" 
+                       class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" 
+                       required
+                       @change="fileName = $event.target.files[0].name">
+                
+                <div x-show="!fileName">
+                    <i class="fa-solid fa-cloud-arrow-up text-4xl text-gray-300 group-hover:text-rosegold mb-3 transition"></i>
+                    <p class="text-sm text-gray-500 font-medium">Нажмите для загрузки фото</p>
+                    <p class="text-[10px] text-gray-400 mt-1">JPG, PNG или PDF</p>
+                </div>
+
+                <div x-show="fileName" x-cloak>
+                    <i class="fa-solid fa-check-circle text-4xl text-green-500 mb-3"></i>
+                    <p class="text-sm text-green-700 font-bold">Файл готов к отправке!</p>
+                    <p class="text-xs text-green-600 mt-1" x-text="fileName"></p>
+                </div>
+            </div>
+            
+            {% if form.license_photo.errors %}
+                <p class="text-red-500 text-xs mt-2 text-center">{{ form.license_photo.errors.0 }}</p>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="w-full bg-rosegold text-white font-bold uppercase tracking-widest py-4 rounded-lg hover:bg-rosegold-dark transition shadow-md mt-4">
+            Отправить на проверку
+        </button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blyur — Профессиональная косметика</title>
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        rosegold: {
+                            DEFAULT: '#D49E8D',
+                            dark: '#B57F6E',
+                            light: '#F5EBE8',
+                        },
+                        gray: {
+                            800: '#374151',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-serif { font-family: 'Playfair Display', serif; }
+        [x-cloak] { display: none !important; }
+        a, button { transition-duration: 300ms; }
+    </style>
+</head>
+<body class="bg-[#FDFCFB] text-gray-800 flex flex-col min-h-screen">
+
+    <div class="bg-rosegold-light py-2 border-b border-rosegold/20">
+        <div class="container mx-auto px-4 flex justify-between items-center text-[10px] md:text-xs font-medium text-gray-600 uppercase tracking-widest">
+            <div class="flex space-x-4 md:space-x-6">
+                <a href="{% url 'about' %}" class="hover:text-rosegold transition">О бренде</a>
+                
+                {% if user.is_authenticated %}
+                    {% if user.status == 'client' %}
+                        <a href="{% url 'upgrade_pro' %}" class="hover:text-rosegold font-bold text-rosegold-dark uppercase transition">
+                            <i class="fa-solid fa-star mr-1"></i> Партнерам
+                        </a>
+                    {% endif %}
+                {% endif %}
+            </div>
+
+            <div class="flex items-center space-x-6">
+                <a href="tel:+79990000000" class="hover:text-rosegold font-bold transition">
+                    <i class="fa-solid fa-phone mr-1 text-rosegold"></i> +7 (999) 000-00-00
+                </a>
+
+                {% if site_settings.price_list %}
+                    <a href="{{ site_settings.price_list.url }}" download class="hover:text-rosegold text-rosegold-dark font-bold hidden sm:inline-flex items-center">
+                        <i class="fa-solid fa-file-pdf mr-1"></i> Прайс
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <nav class="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100 shadow-sm py-4">
+        <div class="container mx-auto px-4 flex justify-between items-center relative">
+            
+            <a href="/" class="flex items-center group z-20">
+                <img src="/media/logo.png" alt="Blyur Logo" class="h-16 w-auto object-contain group-hover:opacity-90 transition">
+                <span class="ml-3 text-3xl font-serif font-bold text-gray-900 tracking-wide group-hover:text-rosegold hidden lg:block transition">
+                    Blyur<span class="text-rosegold">.</span>
+                </span>
+            </a>
+
+            <div class="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center space-x-8 text-xs font-bold uppercase tracking-[0.2em] text-gray-600">
+                <a href="{% url 'catalog' %}" 
+                   class="{% if not current_category %}text-rosegold{% else %}hover:text-rosegold{% endif %} transition relative group">
+                    Все товары
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-rosegold transition-all group-hover:w-full {% if not current_category %}w-full{% endif %}"></span>
+                </a>
+                
+                {% for cat in menu_categories %}
+                    <a href="{% url 'category_detail' cat.slug %}" 
+                       class="{% if current_category.slug == cat.slug %}text-rosegold{% else %}hover:text-rosegold{% endif %} transition relative group">
+                        {{ cat.name }}
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-rosegold transition-all group-hover:w-full {% if current_category.slug == cat.slug %}w-full{% endif %}"></span>
+                    </a>
+                {% endfor %}
+            </div>
+
+            <div class="flex items-center space-x-6 z-20">
+                {% if user.is_authenticated %}
+                    <div class="flex items-center space-x-4">
+                        <a href="{% url 'profile' %}" class="flex flex-col items-center text-gray-600 hover:text-rosegold group" title="Кабинет">
+                            <i class="fa-regular fa-user text-xl mb-1"></i>
+                        </a>
+                        <form action="{% url 'logout' %}" method="post" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="text-gray-400 hover:text-red-400 transition pt-1" title="Выйти">
+                                <i class="fa-solid fa-right-from-bracket text-lg"></i>
+                            </button>
+                        </form>
+                    </div>
+                {% else %}
+                    <a href="{% url 'login' %}" class="flex flex-col items-center text-gray-600 hover:text-rosegold group">
+                        <i class="fa-solid fa-right-to-bracket text-xl mb-1"></i>
+                    </a>
+                {% endif %}
+
+                <a href="#" class="flex items-center text-gray-600 hover:text-rosegold group relative">
+                    <i class="fa-solid fa-bag-shopping text-xl"></i>
+                    <span class="absolute -top-2 -right-2 bg-rosegold text-white text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold shadow-sm">0</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow container mx-auto px-4 py-12">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="bg-[#2A2A2A] text-white pt-16 pb-8 mt-auto">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12 text-sm mb-12">
+            <div class="md:col-span-2">
+                <a href="/" class="inline-block mb-6 group">
+                    <span class="text-3xl font-serif font-bold text-white tracking-wide">
+                        Blyur<span class="text-rosegold">.</span>
+                    </span>
+                </a>
+                <p class="text-gray-400 leading-relaxed max-w-md mb-6 font-light">
+                    Профессиональная косметика, созданная на стыке передовых научных разработок и эстетики.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-serif text-xl mb-6 text-white">Меню</h4>
+                <ul class="space-y-4 text-gray-400 font-medium tracking-wide uppercase text-xs">
+                    <li><a href="{% url 'catalog' %}" class="hover:text-rosegold transition">Все товары</a></li>
+                    {% for cat in menu_categories %}
+                        <li><a href="{% url 'category_detail' cat.slug %}" class="hover:text-rosegold transition">{{ cat.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-serif text-xl mb-6 text-white">Контакты</h4>
+                <p class="text-gray-400 font-bold mb-2">+7 (999) 000-00-00</p>
+                <a href="mailto:info@blyur.com" class="text-rosegold hover:underline block">info@blyur.com</a>
+                <p class="text-gray-500 text-xs mt-4">Ежедневно с 10:00 до 22:00</p>
+            </div>
+        </div>
+        <div class="border-t border-white/10 pt-8 text-center text-xs text-gray-500 uppercase tracking-wider">
+            <p>&copy; 2026 Blyur Cosmetics. Все права защищены.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

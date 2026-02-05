@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex items-center justify-center min-h-[60vh]">
+    <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
+        
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-serif font-bold text-gray-900 mb-2">Регистрация</h2>
+            <p class="text-gray-500 text-sm">Создайте аккаунт для покупок</p>
+        </div>
+
+        <form method="post" class="space-y-5">
+            {% csrf_token %}
+            
+            {% for field in form %}
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase tracking-widest mb-2">
+                        {{ field.label }}
+                    </label>
+                    <input type="{{ field.field.widget.input_type }}" 
+                           name="{{ field.name }}" 
+                           id="{{ field.id_for_label }}"
+                           class="w-full bg-gray-50 border border-gray-200 rounded-lg py-3 px-4 focus:outline-none focus:border-rosegold focus:ring-1 focus:ring-rosegold transition"
+                           {% if field.field.required %}required{% endif %}>
+                    
+                    {% if field.errors %}
+                        <p class="text-red-500 text-xs mt-1">{{ field.errors.0 }}</p>
+                    {% endif %}
+                    
+                    {% if field.help_text %}
+                        <p class="text-gray-400 text-[10px] mt-1">{{ field.help_text|safe }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="w-full bg-rosegold hover:bg-rosegold-dark text-white font-bold py-4 rounded-lg transition uppercase text-xs tracking-widest shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                Создать аккаунт
+            </button>
+        </form>
+
+        <div class="mt-8 text-center text-sm text-gray-500">
+            Уже есть аккаунт? 
+            <a href="{% url 'login' %}" class="text-gray-900 font-bold hover:text-rosegold hover:underline transition">Войти</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

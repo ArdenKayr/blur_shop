@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto">
+    
+    <div class="flex justify-between items-end mb-10">
+        <div>
+            <h1 class="text-4xl font-serif font-bold text-gray-900 mb-2">Личный кабинет</h1>
+            <p class="text-gray-500">Добро пожаловать, {{ user.username }}!</p>
+        </div>
+        <form action="{% url 'logout' %}" method="post" class="md:hidden">
+            {% csrf_token %}
+            <button class="text-xs text-red-400 font-bold uppercase tracking-widest border border-red-200 px-3 py-2 rounded-lg hover:bg-red-50 transition">
+                Выйти
+            </button>
+        </form>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <div class="space-y-8">
+            
+            <div class="bg-white p-8 rounded-2xl shadow-xl shadow-rosegold/5 border border-gray-100 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-rosegold/10 rounded-full blur-3xl -mr-16 -mt-16 transition group-hover:bg-rosegold/20"></div>
+                
+                <div class="flex items-center space-x-4 mb-6 relative z-10">
+                    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center text-gray-400 text-2xl">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg text-gray-900">{{ user.username }}</h3>
+                        <p class="text-xs text-gray-500">{{ user.email }}</p>
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-50 pt-4">
+                    <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-1">Ваш статус</p>
+                    <div class="flex items-center space-x-2">
+                        {% if user.status == 'approved' %}
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">
+                                <i class="fa-solid fa-check-circle mr-2"></i> PRO Косметолог
+                            </span>
+                        {% elif user.status == 'pending' %}
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-700">
+                                <i class="fa-solid fa-clock mr-2"></i> На проверке
+                            </span>
+                        {% else %}
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-600">
+                                Клиент
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            {% if user.status == 'client' %}
+            <div class="bg-rosegold text-white p-8 rounded-2xl shadow-lg relative overflow-hidden">
+                <div class="relative z-10">
+                    <h3 class="font-serif text-2xl font-bold mb-2">Вы косметолог?</h3>
+                    <p class="text-sm opacity-90 mb-6 leading-relaxed">Получите доступ к оптовым ценам и профессиональным линейкам продукции.</p>
+                    <a href="{% url 'upgrade_pro' %}" class="inline-block bg-white text-rosegold font-bold py-3 px-6 rounded-lg text-xs uppercase tracking-widest hover:bg-gray-50 transition shadow-md">
+                        Отправить диплом
+                    </a>
+                </div>
+                <i class="fa-solid fa-star absolute -bottom-6 -right-6 text-9xl text-white opacity-20 rotate-12"></i>
+            </div>
+            {% endif %}
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="w-full text-left px-6 py-4 text-sm font-medium text-red-400 hover:bg-red-50 transition">
+                        <i class="fa-solid fa-right-from-bracket mr-3 opacity-50"></i> Выйти
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="lg:col-span-2">
+            <h3 class="font-serif text-2xl font-bold text-gray-900 mb-6">История заказов</h3>
+            
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-12 text-center">
+                <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-300">
+                    <i class="fa-solid fa-bag-shopping text-3xl"></i>
+                </div>
+                <h4 class="text-lg font-bold text-gray-900 mb-2">Заказов пока нет</h4>
+                <p class="text-gray-500 text-sm mb-8 max-w-xs mx-auto">Перейдите в каталог, чтобы совершить свою первую покупку профессиональной косметики.</p>
+                <a href="{% url 'catalog' %}" class="bg-gray-900 hover:bg-rosegold text-white font-bold py-3 px-8 rounded-lg transition uppercase text-xs tracking-widest shadow-lg">
+                    Перейти к покупкам
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
