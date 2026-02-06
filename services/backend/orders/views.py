@@ -61,15 +61,27 @@ def order_create(request):
             success_url = domain + reverse('payment_success')
             fail_url = domain + reverse('payment_failed')
 
-            response = tinkoff.init_payment(order, order_items_list, success_url, fail_url)
+            try:
+                # Отправляем запрос в банк
+                response = tinkoff.init_payment(order, order_items_list, success_url, fail_url)
 
-            if response.get("Success"):
-                cart.clear()
-                order.payment_id = response.get("PaymentId")
-                order.save()
-                return redirect(response.get("PaymentURL"))
-            else:
-                return render(request, 'orders/error.html', {'message': response.get("Message"), 'details': response.get("Details")})
+                if response.get("Success"):
+                    cart.clear()
+                    order.payment_id = response.get("PaymentId")
+                    order.save()
+                    return redirect(response.get("PaymentURL"))
+                else:
+                    # Ошибка логики банка (например, неверный терминал)
+                    return render(request, 'orders/error.html', {
+                        'message': response.get("Message", "Ошибка банка"), 
+                        'details': response.get("Details", "")
+                    })
+            except Exception as e:
+                # Ошибка соединения (интернет, DNS и т.д.)
+                return render(request, 'orders/error.html', {
+                    'message': "Ошибка соединения с банком",
+                    'details': str(e)
+                })
 
     else:
         initial_data = {}

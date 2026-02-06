@@ -17,25 +17,25 @@ services:
     image: redis:7.2-alpine
 
   web:
-    build: 
-      context: ./services/backend
-    command: python manage.py runserver 0.0.0.0:8000
-    volumes:
-      - ./services/backend:/app
-    ports:
-      - "8000:8000"
-    # --- НАЧАЛО ИЗМЕНЕНИЙ ---
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    # --- КОНЕЦ ИЗМЕНЕНИЙ ---
-    env_file:
-      - ./services/backend/.env
-    depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_started
+      build: 
+        context: ./services/backend
+      command: python manage.py runserver 0.0.0.0:8000
+      volumes:
+        - ./services/backend:/app
+      ports:
+        - "8000:8000"
+      # --- ЯНДЕКС DNS ---
+      dns:
+        - 77.88.8.8
+        - 77.88.8.1
+      # ------------------
+      env_file:
+        - ./services/backend/.env
+      depends_on:
+        db:
+          condition: service_healthy
+        redis:
+          condition: service_started
 
   worker:
     build:
