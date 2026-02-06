@@ -41,19 +41,22 @@
             </form>
         </div>
 
-        <div class="lg:w-1/3 bg-gray-50 p-6 rounded-2xl h-fit">
-            <h3 class="font-bold text-lg mb-4">Ваш заказ</h3>
-            <ul class="space-y-3 mb-6">
-                {% for item in cart %}
-                <li class="flex justify-between text-sm">
-                    <span class="text-gray-600">{{ item.product.name }} x {{ item.quantity }}</span>
-                    <span class="font-medium">{{ item.total_price }} ₽</span>
-                </li>
-                {% endfor %}
-            </ul>
-            <div class="border-t border-gray-200 pt-4 flex justify-between font-bold text-lg">
-                <span>Итого:</span>
-                <span>{{ cart.get_total_price }} ₽</span> </div>
+        <div class="lg:w-1/3 h-fit sticky top-24">
+            <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100">
+                <h3 class="font-bold text-lg mb-4">Ваш заказ</h3>
+                <ul class="space-y-3 mb-6">
+                    {% for item in cart %}
+                    <li class="flex justify-between text-sm">
+                        <span class="text-gray-600">{{ item.product.name }} <span class="text-xs text-gray-400">x{{ item.quantity }}</span></span>
+                        <span class="font-medium">{{ item.total_price }} ₽</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <div class="border-t border-gray-200 pt-4 flex justify-between items-center">
+                    <span class="font-bold text-gray-900">Итого:</span>
+                    <span class="font-bold text-xl text-rosegold-dark">{{ total_price }} ₽</span>
+                </div>
+            </div>
         </div>
     </div>
 </div>

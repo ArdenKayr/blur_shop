@@ -24,6 +24,11 @@ services:
       - ./services/backend:/app
     ports:
       - "8000:8000"
+    # --- НАЧАЛО ИЗМЕНЕНИЙ ---
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    # --- КОНЕЦ ИЗМЕНЕНИЙ ---
     env_file:
       - ./services/backend/.env
     depends_on:
