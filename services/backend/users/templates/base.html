@@ -118,9 +118,14 @@
                     </a>
                 {% endif %}
 
-                <a href="#" class="flex items-center text-gray-600 hover:text-rosegold group relative">
+                <a href="{% url 'cart_detail' %}" class="flex items-center text-gray-600 hover:text-rosegold group relative">
                     <i class="fa-solid fa-bag-shopping text-xl"></i>
-                    <span class="absolute -top-2 -right-2 bg-rosegold text-white text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold shadow-sm">0</span>
+                    
+                    {% if cart|length > 0 %}
+                        <span class="absolute -top-2 -right-2 bg-rosegold text-white text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold shadow-sm">
+                            {{ cart|length }}
+                        </span>
+                    {% endif %}
                 </a>
             </div>
         </div>

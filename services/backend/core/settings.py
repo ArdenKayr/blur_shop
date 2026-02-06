@@ -27,6 +27,8 @@ INSTALLED_APPS = [
     'core',
     'products',
     'users.apps.UsersConfig',
+    'cart',
+    'orders',
 ]
 
 MIDDLEWARE = [
@@ -55,8 +57,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'core.context_processors.site_settings',
                 
-                # ДОБАВЬ ВОТ ЭТУ СТРОКУ:
                 'products.context_processors.menu_categories',
+                'cart.context_processors.cart',
             ],
         },
     },
@@ -119,3 +121,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'catalog'
 LOGOUT_REDIRECT_URL = 'catalog'
+CART_SESSION_ID = 'cart'
+
+TINKOFF_TERMINAL_KEY = 'TinkoffBankTest'  # Для тестов: 'TinkoffBankTest'
+TINKOFF_PASSWORD = 'TinkoffBankTest'          # Для тестов: 'TinkoffBankTest'
+TINKOFF_API_URL = 'https://securepay.tbank.ru/v2'

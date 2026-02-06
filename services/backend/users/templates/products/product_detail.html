@@ -69,9 +69,13 @@
         {% endif %}
 
         <div class="flex space-x-4">
-            <button class="flex-1 bg-gray-900 hover:bg-rosegold text-white font-bold py-4 rounded-xl transition uppercase text-xs tracking-widest shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                Добавить в корзину
-            </button>
+            <form action="{% url 'cart_add' product.id %}" method="post" class="flex-1">
+                {% csrf_token %}
+                <button type="submit" class="w-full bg-gray-900 hover:bg-rosegold text-white font-bold py-4 rounded-xl transition uppercase text-xs tracking-widest shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                    Добавить в корзину
+                </button>
+            </form>
+            
             <button class="w-14 h-14 border border-gray-200 rounded-xl flex items-center justify-center text-gray-400 hover:text-red-400 hover:border-red-200 transition">
                 <i class="fa-regular fa-heart text-xl"></i>
             </button>

@@ -7,3 +7,4 @@ celery>=5.3.0
 gunicorn>=21.2.0
 djangorestframework
 django-cors-headers
+requests
