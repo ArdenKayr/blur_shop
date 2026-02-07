@@ -8,8 +8,9 @@ urlpatterns = [
     # Страница категории
     path('category/<slug:category_slug>/', views.catalog, name='category_detail'),
     
-    # --- ВОТ ЭТОЙ СТРОКИ НЕ ХВАТАЕТ ---
     # Карточка товара
     path('product/<int:product_id>/', views.product_detail, name='product_detail'),
-    path('favorite/<slug:product_slug>/', views.toggle_favorite, name='toggle_favorite'),
+    
+    # Избранное (ВАЖНО: используем product_id)
+    path('favorite/<int:product_id>/', views.toggle_favorite, name='toggle_favorite'),
 ]

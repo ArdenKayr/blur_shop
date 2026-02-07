@@ -126,3 +126,8 @@ CART_SESSION_ID = 'cart'
 TINKOFF_TERMINAL_KEY = env('TINKOFF_TERMINAL_KEY', default='TinkoffBankTest')
 TINKOFF_PASSWORD = env('TINKOFF_PASSWORD', default='TinkoffBankTest')
 TINKOFF_API_URL = 'https://securepay.tinkoff.ru/v2'
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+]

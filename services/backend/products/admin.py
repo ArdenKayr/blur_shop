@@ -13,14 +13,12 @@ def duplicate_product(modeladmin, request, queryset):
         if hasattr(product, 'filters'):
             product.filters.set(old_filters)
 
-# --- НОВАЯ МОДЕЛЬ КАТЕГОРИЙ ---
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'slug', 'order')
     list_editable = ('order',)
     prepopulated_fields = {'slug': ('name',)}
 
-# Остальное без изменений
 @admin.register(FilterGroup)
 class FilterGroupAdmin(admin.ModelAdmin):
     list_display = ('name',)
@@ -37,9 +35,9 @@ class CarouselItemAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    # Добавили category в список
-    list_display = ('name', 'category', 'price_retail', 'price_pro')
-    list_filter = ('category',) # Фильтр справа по категориям
+    # Теперь видны все 3 цены
+    list_display = ('name', 'category', 'price_retail', 'price_cosmetology', 'price_manicure')
+    list_filter = ('category',)
     search_fields = ('name', 'description')
     filter_horizontal = ('filters',) 
     actions = [duplicate_product]

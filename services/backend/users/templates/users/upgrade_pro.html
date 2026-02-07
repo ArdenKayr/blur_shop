@@ -4,12 +4,27 @@
 <div class="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-100 my-10">
     <div class="text-center mb-8">
         <h2 class="font-serif text-3xl text-gray-800 mb-2">Стать партнером</h2>
-        <p class="text-xs text-gray-500 uppercase tracking-widest">Загрузите фото диплома</p>
+        <p class="text-xs text-gray-500 uppercase tracking-widest">Выберите специальность и загрузите диплом</p>
     </div>
 
     <form method="post" enctype="multipart/form-data" class="space-y-6" x-data="{ fileName: '' }">
         {% csrf_token %}
         
+        <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+            <label class="block text-xs font-bold text-gray-700 uppercase tracking-widest mb-3">Ваша специальность:</label>
+            <div class="space-y-2">
+                {% for radio in form.requested_role %}
+                <label class="flex items-center space-x-3 cursor-pointer group">
+                    {{ radio.tag }}
+                    <span class="text-sm text-gray-700 group-hover:text-rosegold transition">{{ radio.choice_label }}</span>
+                </label>
+                {% endfor %}
+            </div>
+            {% if form.requested_role.errors %}
+                <p class="text-red-500 text-xs mt-2">{{ form.requested_role.errors.0 }}</p>
+            {% endif %}
+        </div>
+
         <div>
             <div class="relative border-2 border-dashed rounded-lg p-8 text-center transition group cursor-pointer"
                  :class="fileName ? 'border-green-500 bg-green-50' : 'border-gray-300 hover:border-rosegold'">
@@ -17,7 +32,6 @@
                 <input type="file" 
                        name="license_photo" 
                        class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" 
-                       required
                        @change="fileName = $event.target.files[0].name">
                 
                 <div x-show="!fileName">

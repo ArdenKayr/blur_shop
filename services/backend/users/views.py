@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
-from django.contrib.auth.decorators import login_required # Импортируем декоратор
-from .forms import RegisterForm
+from django.contrib.auth.decorators import login_required
+from .forms import RegisterForm, UpgradeRequestForm
 
 def register(request):
     """Регистрация нового пользователя"""
@@ -16,11 +16,26 @@ def register(request):
     
     return render(request, 'users/register.html', {'form': form})
 
-# --- НОВАЯ ФУНКЦИЯ ---
 @login_required
 def profile(request):
     """Личный кабинет пользователя"""
     return render(request, 'users/profile.html')
 
+@login_required
 def upgrade_to_pro(request):
-    return render(request, 'users/upgrade_pro.html')
+    """Страница подачи заявки на профи"""
+    if request.method == 'POST':
+        form = UpgradeRequestForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.verification_status = 'pending' 
+            user.save()
+            return render(request, 'users/upgrade_success.html')
+    else:
+        form = UpgradeRequestForm(instance=request.user)
+    
+    return render(request, 'users/upgrade_pro.html', {'form': form})
+
+def about(request):
+    """Страница О бренде"""
+    return render(request, 'users/about.html')

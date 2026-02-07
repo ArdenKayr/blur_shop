@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from decimal import Decimal
 
 class Category(models.Model):
     """Разделы каталога (меню)"""
@@ -16,7 +17,7 @@ class Category(models.Model):
         return self.name
 
 class FilterGroup(models.Model):
-    name = models.CharField("Название группы", max_length=100) # Например "Объем", "Тип кожи"
+    name = models.CharField("Название группы", max_length=100)
     
     def __str__(self):
         return self.name
@@ -26,7 +27,7 @@ class FilterGroup(models.Model):
 
 class FilterValue(models.Model):
     group = models.ForeignKey(FilterGroup, on_delete=models.CASCADE, related_name='values')
-    value = models.CharField("Значение", max_length=100) # Например "50 мл", "Сухая"
+    value = models.CharField("Значение", max_length=100)
 
     def __str__(self):
         return f"{self.group.name}: {self.value}"
@@ -35,7 +36,6 @@ class FilterValue(models.Model):
         verbose_name_plural = "Значения фильтров"
 
 class Product(models.Model):
-    # Добавили связь с категорией
     category = models.ForeignKey(
         Category, 
         on_delete=models.SET_NULL, 
@@ -47,15 +47,15 @@ class Product(models.Model):
     
     name = models.CharField("Название", max_length=200)
     description = models.TextField("Описание", blank=True)
+    
+    # --- ТРИ ВИДА ЦЕН ---
     price_retail = models.DecimalField("Цена (Розница)", max_digits=10, decimal_places=2)
-    price_pro = models.DecimalField("Цена (ПРО)", max_digits=10, decimal_places=2)
+    price_cosmetology = models.DecimalField("Цена (Косметолог)", max_digits=10, decimal_places=2)
+    price_manicure = models.DecimalField("Цена (Маникюр/Педикюр)", max_digits=10, decimal_places=2, default=0)
     
     image = models.ImageField("Фото товара", upload_to='products/', blank=True, null=True)
-    
     is_new = models.BooleanField("Новинка", default=True)
-    
     filters = models.ManyToManyField(FilterValue, blank=True, verbose_name="Характеристики")
-    
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -65,6 +65,22 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_price_for_user(self, user):
+        """
+        Возвращает наименьшую доступную цену для пользователя.
+        Если пользователь и косметолог, и мастер маникюра -> берем минимальную из всех.
+        """
+        prices = [self.price_retail] # Розничная цена доступна всем
+        
+        if user.is_authenticated:
+            if user.is_cosmetologist:
+                prices.append(self.price_cosmetology)
+            if user.is_manicurist:
+                prices.append(self.price_manicure)
+        
+        # Возвращаем самую низкую из доступных
+        return min(prices)
 
 class CarouselItem(models.Model):
     title = models.CharField("Заголовок", max_length=100)
@@ -84,7 +100,7 @@ class Favorite(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('user', 'product') # Один товар в избранном только один раз
+        unique_together = ('user', 'product')
         verbose_name = 'Избранное'
         verbose_name_plural = 'Избранное'
 

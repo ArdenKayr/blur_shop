@@ -2,25 +2,20 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from . import views  # Импортируем views из папки core (там только about)
+import os
 
 urlpatterns = [
-    # 1. Админка
     path('admin/', admin.site.urls),
-
-    # 2. Приложения (через include)
-    path('users/', include('users.urls')),
-    path('cart/', include('cart.urls')),      # Корзина
-    
-    # 3. Страница "О бренде" (она в core/views.py)
-    path('about/', views.about, name='about'),
-
-    # 4. Главная страница -> каталог товаров (ВАЖНО: include, а не views.catalog)
+    path('', include('users.urls')),
     path('', include('products.urls')),
-
+    path('cart/', include('cart.urls')),
     path('orders/', include('orders.urls')),
 ]
 
+# Настройка раздачи файлов при разработке (DEBUG=True)
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    
+    # --- ЭТО ПОЗВОЛИТ ВАМ ВИДЕТЬ ФАЙЛЫ В АДМИНКЕ ---
+    urlpatterns += static('/protected_media/', document_root=os.path.join(settings.BASE_DIR, 'protected_media'))
