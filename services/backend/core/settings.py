@@ -123,6 +123,6 @@ LOGIN_REDIRECT_URL = 'catalog'
 LOGOUT_REDIRECT_URL = 'catalog'
 CART_SESSION_ID = 'cart'
 
-TINKOFF_TERMINAL_KEY = 'TinkoffBankTest'  # Для тестов: 'TinkoffBankTest'
-TINKOFF_PASSWORD = 'TinkoffBankTest'          # Для тестов: 'TinkoffBankTest'
-TINKOFF_API_URL = 'https://securepay.tbank.ru/v2'
+TINKOFF_TERMINAL_KEY = env('TINKOFF_TERMINAL_KEY', default='TinkoffBankTest')
+TINKOFF_PASSWORD = env('TINKOFF_PASSWORD', default='TinkoffBankTest')
+TINKOFF_API_URL = 'https://securepay.tinkoff.ru/v2'

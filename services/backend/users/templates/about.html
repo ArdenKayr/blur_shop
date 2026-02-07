@@ -1,64 +1,94 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto py-12">
+<div class="max-w-5xl mx-auto px-4">
     
-    <div class="text-center mb-16">
-        <span class="text-xs font-bold text-rosegold uppercase tracking-[0.2em] mb-4 block">Наша философия</span>
-        <h1 class="text-4xl md:text-5xl font-serif font-bold text-gray-900 leading-tight">
-            О бренде <span class="text-rosegold">BLYUR</span>
+    <div class="text-center mb-20 animate-fade-in-up">
+        <span class="text-rosegold font-bold uppercase tracking-[0.25em] text-sm md:text-base mb-6 block">О компании</span>
+        <h1 class="text-5xl md:text-7xl font-serif font-bold text-gray-900 mb-8 leading-tight">
+            Новая эра <br> <span class="text-rosegold italic">ухода за кожей</span>
         </h1>
-        <div class="w-24 h-1 bg-gray-100 mx-auto mt-8 rounded-full"></div>
+        <div class="w-32 h-1.5 bg-rosegold mx-auto rounded-full"></div>
     </div>
 
-    <div class="bg-white p-8 md:p-12 rounded-2xl shadow-xl shadow-rosegold/5 border border-gray-50 relative overflow-hidden">
+    <div class="max-w-4xl mx-auto text-center mb-24 leading-relaxed font-light">
+        <p class="text-2xl md:text-3xl text-gray-800 font-serif mb-10 leading-snug">
+            "Blyur Cosmetics — это сочетание европейского качества ингредиентов и эффективности, подтверждённой практическими результатами."
+        </p>
+        <p class="text-lg md:text-xl text-gray-600 mb-6">
+            Формулы разработаны с учётом современных дерматологических исследований. Мы ориентированы на то, чтобы вы увидели эффект 
+            <strong class="text-gray-900 font-medium">уже после первого применения</strong>.
+        </p>
+        <p class="text-lg md:text-xl text-gray-600">
+            Наши средства дарят видимые результаты при ежедневном использовании и работают на долгосрочную перспективу.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
+        <div class="bg-white p-10 rounded-3xl shadow-sm border border-gray-100 text-center hover:shadow-md transition duration-300">
+            <div class="w-16 h-16 bg-rosegold/10 rounded-full flex items-center justify-center mx-auto mb-6 text-rosegold">
+                <i class="fa-solid fa-flask text-2xl"></i>
+            </div>
+            <h3 class="font-serif text-2xl font-bold text-gray-900 mb-4">Европейские ингредиенты</h3>
+            <p class="text-base text-gray-600 leading-relaxed">
+                Производство в России с использованием лучших компонентов из Италии, Швеции и Германии.
+            </p>
+        </div>
+
+        <div class="bg-white p-10 rounded-3xl shadow-sm border border-gray-100 text-center hover:shadow-md transition duration-300">
+            <div class="w-16 h-16 bg-rosegold/10 rounded-full flex items-center justify-center mx-auto mb-6 text-rosegold">
+                <i class="fa-solid fa-leaf text-2xl"></i>
+            </div>
+            <h3 class="font-serif text-2xl font-bold text-gray-900 mb-4">Натуральные формулы</h3>
+            <p class="text-base text-gray-600 leading-relaxed">
+                Высокое содержание активных компонентов для максимальной эффективности и безопасности.
+            </p>
+        </div>
+
+        <div class="bg-white p-10 rounded-3xl shadow-sm border border-gray-100 text-center hover:shadow-md transition duration-300">
+            <div class="w-16 h-16 bg-rosegold/10 rounded-full flex items-center justify-center mx-auto mb-6 text-rosegold">
+                <i class="fa-regular fa-clock text-2xl"></i>
+            </div>
+            <h3 class="font-serif text-2xl font-bold text-gray-900 mb-4">Мгновенный эффект</h3>
+            <p class="text-base text-gray-600 leading-relaxed">
+                Видимый результат с первого применения и накопительный эффект при регулярном уходе.
+            </p>
+        </div>
+    </div>
+
+    <div class="relative bg-gray-900 rounded-[2rem] overflow-hidden p-10 md:p-20 text-center text-white mb-24 shadow-2xl">
+        <div class="absolute top-0 left-0 w-full h-full opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
         
-        <i class="fa-solid fa-leaf absolute -top-10 -right-10 text-[150px] text-rosegold/5 rotate-12"></i>
-
-        <div class="relative z-10 space-y-8 text-lg text-gray-600 font-light leading-relaxed">
+        <div class="relative z-10 max-w-3xl mx-auto">
+            <span class="text-rosegold font-bold uppercase tracking-widest text-sm mb-6 block">Наша философия</span>
+            <h2 class="text-3xl md:text-5xl font-serif font-bold mb-8 leading-tight">
+                "За каждым продуктом Blyur стоят знания анатомии и стремление к идеальной эстетике."
+            </h2>
+            <p class="text-gray-300 font-light text-lg md:text-xl leading-relaxed mb-10">
+                Мы создаем косметику для профессионалов, которые выбирают качество по доступной цене. Это не просто уход — это забота о вашей красоте на научном уровне.
+            </p>
             
-            <p class="first-letter:text-5xl first-letter:font-serif first-letter:text-rosegold first-letter:float-left first-letter:mr-3 first-letter:mt-[-10px]">
-                Приветствуем Вас на сайте компании 
-                <strong class="text-gray-900 font-medium">BLYUR cosmetics</strong>!
-            </p>
-
-            <p>
-                <span class="font-serif text-gray-900 italic">BLYUR</span> — это онлайн-магазин, специализирующийся на профессиональной ухаживающей косметике и косметевтике для кожи лица, тела и волос.
-            </p>
-
-            <div class="border-l-4 border-rosegold pl-6 py-2 my-8 bg-rosegold/5 rounded-r-lg">
-                <p class="text-gray-800 italic">
-                    В BLYUR вы сможете найти средства для решения различных косметологических задач, от борьбы с морщинами до устранения целлюлита.
-                </p>
-            </div>
-
-            <p>
-                Вся продукция, представленная в BLYUR, <span class="text-rosegold font-medium">сертифицирована</span> и имеет необходимые декларации о соответствии, поэтому ее можно использовать как в домашних условиях, так и в салонах красоты, клиниках и медицинских учреждениях.
-            </p>
-
+            {% if not user.is_authenticated %}
+                <a href="{% url 'login' %}" class="inline-block px-10 py-4 bg-rosegold text-white font-bold uppercase tracking-widest text-sm rounded-full hover:bg-white hover:text-gray-900 transition duration-300 transform hover:-translate-y-1 shadow-lg">
+                    Присоединиться к нам
+                </a>
+            {% endif %}
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 pt-12 border-t border-gray-100">
-            <div class="text-center">
-                <i class="fa-solid fa-certificate text-2xl text-rosegold mb-3"></i>
-                <h4 class="font-bold text-gray-900 text-sm uppercase tracking-wide">Сертифицировано</h4>
-            </div>
-            <div class="text-center">
-                <i class="fa-solid fa-flask text-2xl text-rosegold mb-3"></i>
-                <h4 class="font-bold text-gray-900 text-sm uppercase tracking-wide">Профессионально</h4>
-            </div>
-            <div class="text-center">
-                <i class="fa-solid fa-spa text-2xl text-rosegold mb-3"></i>
-                <h4 class="font-bold text-gray-900 text-sm uppercase tracking-wide">Эффективно</h4>
-            </div>
-        </div>
-
     </div>
-    
-    <div class="text-center mt-12">
-        <a href="{% url 'catalog' %}" class="inline-block bg-gray-900 hover:bg-rosegold text-white font-bold py-4 px-10 rounded-full transition uppercase text-xs tracking-widest shadow-lg hover:shadow-xl hover:-translate-y-1">
-            Перейти в каталог
-        </a>
+
+    <div class="text-center border-t border-gray-200 pt-20 pb-10">
+        <h3 class="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-4">Остались вопросы?</h3>
+        <p class="text-xl text-gray-500 mb-8">Мы всегда рады помочь с выбором или сотрудничеством.</p>
+        
+        <div class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-12">
+            <a href="mailto:blyurcosmetics1@gmail.com" class="text-2xl text-rosegold font-bold hover:text-rosegold-dark transition border-b-2 border-transparent hover:border-rosegold">
+                blyurcosmetics1@gmail.com
+            </a>
+            <span class="hidden md:block text-gray-300 text-3xl">•</span>
+            <a href="tel:+79770897689" class="text-2xl text-gray-900 font-bold hover:text-rosegold transition">
+                +7 (977) 089-76-89
+            </a>
+        </div>
     </div>
 
 </div>

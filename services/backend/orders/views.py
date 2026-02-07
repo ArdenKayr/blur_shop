@@ -113,7 +113,16 @@ def payment_notification(request):
         try:
             import json
             data = json.loads(request.body)
-            order_id = data.get('OrderId')
+            
+            # Получаем ID от банка (например "7_1707234567")
+            order_id_raw = data.get('OrderId')
+            
+            # Отделяем реальный ID заказа (цифру 7) от хвоста
+            if '_' in str(order_id_raw):
+                order_id = order_id_raw.split('_')[0]
+            else:
+                order_id = order_id_raw
+                
             status = data.get('Status')
             
             # Для модели Order нужен импорт
@@ -126,6 +135,7 @@ def payment_notification(request):
                 order.save()
                 
             return HttpResponse("OK", content_type="text/plain")
-        except:
+        except Exception as e:
+            print(f"Webhook error: {e}") # Для отладки в логах
             return HttpResponse("FAIL", status=400)
     return HttpResponse("OK")

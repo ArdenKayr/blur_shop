@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 class Category(models.Model):
     """Разделы каталога (меню)"""
@@ -76,3 +77,16 @@ class CarouselItem(models.Model):
         verbose_name = "Слайд карусели"
         verbose_name_plural = "Слайды карусели"
         ordering = ['order']
+
+class Favorite(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='favorites')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='favorited_by')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'product') # Один товар в избранном только один раз
+        verbose_name = 'Избранное'
+        verbose_name_plural = 'Избранное'
+
+    def __str__(self):
+        return f"{self.user} -> {self.product}"

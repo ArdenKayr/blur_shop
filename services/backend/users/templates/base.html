@@ -11,7 +11,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
     <script>
         tailwind.config = {
@@ -19,12 +19,16 @@
                 extend: {
                     colors: {
                         rosegold: {
-                            DEFAULT: '#D49E8D',
-                            dark: '#B57F6E',
-                            light: '#F5EBE8',
+                            DEFAULT: '#E08D79', 
+                            dark: '#C05F48',    
+                            light: '#FFF0ED',   
                         },
                         gray: {
-                            800: '#374151',
+                            50: '#F9FAFB',
+                            100: '#F3F4F6',
+                            200: '#E5E7EB',
+                            800: '#2D2D2D', 
+                            900: '#1a1a1a', 
                         }
                     },
                     fontFamily: {
@@ -43,100 +47,128 @@
         a, button { transition-duration: 300ms; }
     </style>
 </head>
-<body class="bg-[#FDFCFB] text-gray-800 flex flex-col min-h-screen">
+<body class="bg-[#F4EFED] text-gray-800 flex flex-col min-h-screen">
 
-    <div class="bg-rosegold-light py-2 border-b border-rosegold/20">
-        <div class="container mx-auto px-4 flex justify-between items-center text-[10px] md:text-xs font-medium text-gray-600 uppercase tracking-widest">
-            <div class="flex space-x-4 md:space-x-6">
-                <a href="{% url 'about' %}" class="hover:text-rosegold transition">О бренде</a>
-                
-                {% if user.is_authenticated %}
-                    {% if user.status == 'client' %}
-                        <a href="{% url 'upgrade_pro' %}" class="hover:text-rosegold font-bold text-rosegold-dark uppercase transition">
-                            <i class="fa-solid fa-star mr-1"></i> Партнерам
-                        </a>
-                    {% endif %}
-                {% endif %}
-            </div>
-
-            <div class="flex items-center space-x-6">
-                <a href="tel:+79990000000" class="hover:text-rosegold font-bold transition">
-                    <i class="fa-solid fa-phone mr-1 text-rosegold"></i> +7 (999) 000-00-00
-                </a>
-
-                {% if site_settings.price_list %}
-                    <a href="{{ site_settings.price_list.url }}" download class="hover:text-rosegold text-rosegold-dark font-bold hidden sm:inline-flex items-center">
-                        <i class="fa-solid fa-file-pdf mr-1"></i> Прайс
-                    </a>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-
-    <nav class="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100 shadow-sm py-4">
-        <div class="container mx-auto px-4 flex justify-between items-center relative">
+    <header class="bg-white/95 backdrop-blur-md sticky top-0 z-50 shadow-sm border-b border-gray-100">
+        
+        <div class="container mx-auto px-4 py-5">
             
-            <a href="/" class="flex items-center group z-20">
-                <img src="/media/logo.png" alt="Blyur Logo" class="h-16 w-auto object-contain group-hover:opacity-90 transition">
-                <span class="ml-3 text-3xl font-serif font-bold text-gray-900 tracking-wide group-hover:text-rosegold hidden lg:block transition">
-                    Blyur<span class="text-rosegold">.</span>
-                </span>
-            </a>
-
-            <div class="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center space-x-8 text-xs font-bold uppercase tracking-[0.2em] text-gray-600">
-                <a href="{% url 'catalog' %}" 
-                   class="{% if not current_category %}text-rosegold{% else %}hover:text-rosegold{% endif %} transition relative group">
-                    Все товары
-                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-rosegold transition-all group-hover:w-full {% if not current_category %}w-full{% endif %}"></span>
-                </a>
+            <div class="flex flex-col md:flex-row justify-center items-center relative gap-8 lg:gap-16">
                 
-                {% for cat in menu_categories %}
-                    <a href="{% url 'category_detail' cat.slug %}" 
-                       class="{% if current_category.slug == cat.slug %}text-rosegold{% else %}hover:text-rosegold{% endif %} transition relative group">
-                        {{ cat.name }}
-                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-rosegold transition-all group-hover:w-full {% if current_category.slug == cat.slug %}w-full{% endif %}"></span>
-                    </a>
-                {% endfor %}
-            </div>
-
-            <div class="flex items-center space-x-6 z-20">
-                {% if user.is_authenticated %}
-                    <div class="flex items-center space-x-4">
-                        <a href="{% url 'profile' %}" class="flex flex-col items-center text-gray-600 hover:text-rosegold group" title="Кабинет">
-                            <i class="fa-regular fa-user text-xl mb-1"></i>
-                        </a>
-                        <form action="{% url 'logout' %}" method="post" class="inline">
-                            {% csrf_token %}
-                            <button type="submit" class="text-gray-400 hover:text-red-400 transition pt-1" title="Выйти">
-                                <i class="fa-solid fa-right-from-bracket text-lg"></i>
-                            </button>
-                        </form>
-                    </div>
-                {% else %}
-                    <a href="{% url 'login' %}" class="flex flex-col items-center text-gray-600 hover:text-rosegold group">
-                        <i class="fa-solid fa-right-to-bracket text-xl mb-1"></i>
-                    </a>
-                {% endif %}
-
-                <a href="{% url 'cart_detail' %}" class="flex items-center text-gray-600 hover:text-rosegold group relative">
-                    <i class="fa-solid fa-bag-shopping text-xl"></i>
-                    
-                    {% if cart|length > 0 %}
-                        <span class="absolute -top-2 -right-2 bg-rosegold text-white text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold shadow-sm">
-                            {{ cart|length }}
+                <div class="hidden md:flex flex-col items-end space-y-1 text-right w-1/3">
+                    <a href="tel:+79990000000" class="group flex items-center hover:text-rosegold-dark transition">
+                        <span class="text-xl font-serif font-bold tracking-wide text-gray-900 group-hover:text-rosegold transition">
+                            +7 (999) 000-00-00
                         </span>
-                    {% endif %}
-                </a>
-            </div>
-        </div>
-    </nav>
+                    </a>
 
-    <main class="flex-grow container mx-auto px-4 py-12">
+                    <div class="flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-gray-500">
+                        <a href="{% url 'about' %}" class="hover:text-rosegold-dark transition border-b border-transparent hover:border-rosegold">
+                            О бренде
+                        </a>
+                        {% if site_settings.price_list %}
+                            <span class="text-rosegold">•</span>
+                            <a href="{{ site_settings.price_list.url }}" download class="hover:text-rosegold-dark transition flex items-center group">
+                                <i class="fa-solid fa-file-pdf mr-1 text-rosegold group-hover:text-rosegold-dark"></i>
+                                <span>Прайс</span>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="w-full md:w-auto flex flex-col items-center justify-center order-first md:order-none mb-3 md:mb-0">
+                    <a href="/" class="flex flex-row items-center gap-4 group">
+                        
+                        <div class="relative h-16 w-auto">
+                            <img src="/media/logo.png" alt="Blyur" class="h-full w-auto object-contain group-hover:scale-105 transition duration-300">
+                        </div>
+                        
+                        <span class="font-serif font-bold text-5xl text-gray-900 tracking-wide group-hover:text-rosegold transition-colors duration-300 leading-none pb-1">
+                            Blyur<span class="text-rosegold">.</span>
+                        </span>
+                    </a>
+                </div>
+
+                <div class="flex flex-col items-center md:items-start space-y-4 w-full md:w-1/3">
+                    
+                    {% if user.is_authenticated %}
+                        {% if user.status == 'client' %}
+                            <a href="{% url 'upgrade_pro' %}" class="flex items-center px-7 py-3 bg-gray-900 text-white hover:bg-rosegold text-xs font-bold uppercase tracking-widest rounded-full transition shadow-md hover:shadow-xl transform hover:-translate-y-0.5">
+                                <i class="fa-solid fa-crown mr-2 text-rosegold group-hover:text-white text-sm"></i> 
+                                Цены для профи
+                            </a>
+                        {% endif %}
+                    {% endif %}
+
+                    <div class="flex items-center space-x-6 text-gray-700 pl-2">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'profile' %}" class="hover:text-rosegold-dark transition" title="Кабинет">
+                                <i class="fa-regular fa-user text-2xl"></i>
+                            </a>
+                            <form action="{% url 'logout' %}" method="post" class="inline flex items-center">
+                                {% csrf_token %}
+                                <button type="submit" class="hover:text-red-500 transition pt-1" title="Выйти">
+                                    <i class="fa-solid fa-right-from-bracket text-xl"></i>
+                                </button>
+                            </form>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="hover:text-rosegold-dark transition flex items-center font-bold text-sm uppercase tracking-wider group">
+                                <span class="mr-2 border-b border-transparent group-hover:border-rosegold">Войти</span>
+                                <i class="fa-solid fa-arrow-right-to-bracket text-xl text-rosegold-dark"></i>
+                            </a>
+                        {% endif %}
+
+                        <a href="{% url 'cart_detail' %}" class="hover:text-rosegold-dark transition relative group">
+                            <i class="fa-solid fa-bag-shopping text-3xl text-gray-800 group-hover:text-rosegold transition"></i>
+                            {% if cart|length > 0 %}
+                                <span class="absolute -top-1 -right-2 bg-rosegold text-white text-[10px] rounded-full w-5 h-5 flex items-center justify-center font-bold shadow-sm border border-white">
+                                    {{ cart|length }}
+                                </span>
+                            {% endif %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hidden md:flex justify-center mt-4 pt-4 border-t border-gray-100 w-full max-w-5xl mx-auto">
+                <nav class="flex items-center space-x-12 text-sm font-bold uppercase tracking-[0.2em] text-gray-800">
+                    <a href="{% url 'catalog' %}" 
+                       class="{% if not current_category %}text-rosegold-dark{% else %}hover:text-rosegold-dark{% endif %} transition relative group pb-1">
+                        Все товары
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-rosegold transition-all group-hover:w-full {% if not current_category %}w-full{% endif %}"></span>
+                    </a>
+                    
+                    {% for cat in menu_categories %}
+                        <a href="{% url 'category_detail' cat.slug %}" 
+                           class="{% if current_category.slug == cat.slug %}text-rosegold-dark{% else %}hover:text-rosegold-dark{% endif %} transition relative group pb-1">
+                            {{ cat.name }}
+                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-rosegold transition-all group-hover:w-full {% if current_category.slug == cat.slug %}w-full{% endif %}"></span>
+                        </a>
+                    {% endfor %}
+                </nav>
+            </div>
+            
+            <div class="md:hidden flex flex-col items-center mt-4 space-y-2 text-sm font-medium text-gray-600 border-t border-gray-100 pt-4">
+                <a href="tel:+79990000000" class="flex items-center">
+                    <i class="fa-solid fa-phone mr-2 text-rosegold"></i> +7 (999) 000-00-00
+                </a>
+                <div class="flex space-x-4 text-xs uppercase tracking-wider">
+                    <a href="{% url 'about' %}">О бренде</a>
+                    {% if site_settings.price_list %}
+                    <a href="{{ site_settings.price_list.url }}" download>Прайс-лист</a>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-8 md:py-12">
         {% block content %}
         {% endblock %}
     </main>
 
-    <footer class="bg-[#2A2A2A] text-white pt-16 pb-8 mt-auto">
+    <footer class="bg-[#2A2A2A] text-white pt-16 pb-8 mt-auto border-t border-rosegold/30">
         <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12 text-sm mb-12">
             <div class="md:col-span-2">
                 <a href="/" class="inline-block mb-6 group">

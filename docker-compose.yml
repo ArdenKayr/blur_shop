@@ -24,11 +24,6 @@ services:
         - ./services/backend:/app
       ports:
         - "8000:8000"
-      # --- ЯНДЕКС DNS ---
-      dns:
-        - 77.88.8.8
-        - 77.88.8.1
-      # ------------------
       env_file:
         - ./services/backend/.env
       depends_on:

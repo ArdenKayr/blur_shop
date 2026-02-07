@@ -11,4 +11,5 @@ urlpatterns = [
     # --- ВОТ ЭТОЙ СТРОКИ НЕ ХВАТАЕТ ---
     # Карточка товара
     path('product/<int:product_id>/', views.product_detail, name='product_detail'),
+    path('favorite/<slug:product_slug>/', views.toggle_favorite, name='toggle_favorite'),
 ]

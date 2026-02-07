@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Product, CarouselItem, Category, FilterGroup
 from django.db.models import Q
+from .models import Product, Category, Favorite
 
 def catalog(request, category_slug=None):
     """
@@ -83,3 +84,15 @@ def product_detail(request, product_id):
         'related_products': related_products,
     }
     return render(request, 'products/product_detail.html', context)
+
+@login_required
+def toggle_favorite(request, product_slug):
+    product = get_object_or_404(Product, slug=product_slug)
+    # Если лайк есть — удаляем, если нет — создаем
+    favorite, created = Favorite.objects.get_or_create(user=request.user, product=product)
+    
+    if not created:
+        favorite.delete()
+        
+    # Возвращаем пользователя на ту же страницу, где он был
+    return redirect(request.META.get('HTTP_REFERER', 'catalog'))
