@@ -5,14 +5,10 @@ from django.utils.html import format_html
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
-    # Колонки в таблице
     list_display = ('username', 'email', 'verification_status_colored', 'roles_display', 'is_staff')
-    
-    # Фильтры
     list_filter = ('verification_status', 'is_cosmetologist', 'is_manicurist')
     search_fields = ('username', 'first_name', 'last_name', 'email')
 
-    # Поля внутри карточки пользователя
     fieldsets = UserAdmin.fieldsets + (
         ('Статус специалиста', {
             'fields': (
@@ -51,6 +47,14 @@ class CustomUserAdmin(UserAdmin):
 
     def preview_photo(self, obj):
         if obj.license_photo:
-            return format_html('<a href="{}" target="_blank"><img src="{}" style="max-height: 200px;"/></a>', obj.license_photo.url, obj.license_photo.url)
-        return "Нет фото"
+            # Ссылка теперь точно ведет на правильный URL
+            return format_html(
+                '<a href="{}" target="_blank" style="color: #E08D79; font-weight: bold;">'
+                '<img src="{}" style="max-height: 150px; border: 1px solid #ddd; padding: 4px; border-radius: 4px; display: block; margin-bottom: 5px;"/>'
+                'Открыть оригинал'
+                '</a>', 
+                obj.license_photo.url, 
+                obj.license_photo.url
+            )
+        return "Нет документа"
     preview_photo.short_description = "Документ"

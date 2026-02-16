@@ -24,10 +24,15 @@ def profile(request):
 @login_required
 def upgrade_to_pro(request):
     """Страница подачи заявки на профи"""
+    # Если у пользователя уже есть ВСЕ роли, отправляем его в профиль
+    if request.user.is_cosmetologist and request.user.is_manicurist:
+        return redirect('profile')
+
     if request.method == 'POST':
         form = UpgradeRequestForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             user = form.save(commit=False)
+            # Сбрасываем статус на "На проверке", чтобы админ увидел новую заявку
             user.verification_status = 'pending' 
             user.save()
             return render(request, 'users/upgrade_success.html')

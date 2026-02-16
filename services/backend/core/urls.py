@@ -12,10 +12,12 @@ urlpatterns = [
     path('orders/', include('orders.urls')),
 ]
 
-# Настройка раздачи файлов при разработке (DEBUG=True)
+# Настройка раздачи файлов при разработке
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     
-    # --- ЭТО ПОЗВОЛИТ ВАМ ВИДЕТЬ ФАЙЛЫ В АДМИНКЕ ---
+    # Исправляем путь для просмотра защищенных файлов в админке
+    # Файлы физически лежат в BASE_DIR/protected_media/
+    # Ссылка в браузере будет /protected_media/имя_файла
     urlpatterns += static('/protected_media/', document_root=os.path.join(settings.BASE_DIR, 'protected_media'))

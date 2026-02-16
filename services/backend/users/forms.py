@@ -15,7 +15,6 @@ class RegisterForm(UserCreationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.email = self.cleaned_data['email']
-        # При регистрации статус заявки - 'none'
         user.verification_status = 'none' 
         if commit:
             user.save()
@@ -27,7 +26,6 @@ class UpgradeRequestForm(forms.ModelForm):
         model = User
         fields = ('requested_role', 'license_photo')
         widgets = {
-            # Радио-кнопки для выбора роли
             'requested_role': forms.RadioSelect(attrs={'class': 'space-y-2'}),
         }
     
@@ -35,4 +33,18 @@ class UpgradeRequestForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['requested_role'].required = True
         self.fields['license_photo'].required = True
-        self.fields['requested_role'].label = "Специальность"
+        self.fields['requested_role'].label = "Желаемая специальность"
+        
+        # --- ЛОГИКА: Убираем роли, которые уже есть у пользователя ---
+        if self.instance and self.instance.pk:
+            current_choices = list(self.fields['requested_role'].choices)
+            new_choices = []
+            for role_code, role_label in current_choices:
+                # Если роль уже есть - пропускаем её
+                if role_code == 'cosmetologist' and self.instance.is_cosmetologist:
+                    continue
+                if role_code == 'manicurist' and self.instance.is_manicurist:
+                    continue
+                new_choices.append((role_code, role_label))
+            
+            self.fields['requested_role'].choices = new_choices

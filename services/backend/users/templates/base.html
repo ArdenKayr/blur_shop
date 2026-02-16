@@ -93,7 +93,7 @@
                     
                     {% if user.is_authenticated %}
                         {% if not user.is_cosmetologist or not user.is_manicurist %}
-                            <a href="{% url 'upgrade_pro' %}" class="flex items-center px-7 py-3 bg-gray-900 text-white hover:bg-rosegold text-xs font-bold uppercase tracking-widest rounded-full transition shadow-md hover:shadow-xl transform hover:-translate-y-0.5">
+                            <a href="{% url 'upgrade_pro' %}" class="hidden md:flex items-center px-7 py-3 bg-gray-900 text-white hover:bg-rosegold text-xs font-bold uppercase tracking-widest rounded-full transition shadow-md hover:shadow-xl transform hover:-translate-y-0.5">
                                 <i class="fa-solid fa-crown mr-2 text-rosegold group-hover:text-white text-sm"></i> 
                                 {% if user.verification_status == 'pending' %}
                                     Заявка на проверке
@@ -152,7 +152,21 @@
                 </nav>
             </div>
             
-            <div class="md:hidden flex flex-col items-center mt-4 space-y-2 text-sm font-medium text-gray-600 border-t border-gray-100 pt-4">
+            <div class="md:hidden flex flex-col items-center mt-4 space-y-4 text-sm font-medium text-gray-600 border-t border-gray-100 pt-4">
+                
+                {% if user.is_authenticated %}
+                    {% if not user.is_cosmetologist or not user.is_manicurist %}
+                        <a href="{% url 'upgrade_pro' %}" class="flex items-center px-6 py-2 bg-gray-900 text-white hover:bg-rosegold text-xs font-bold uppercase tracking-widest rounded-full transition shadow-md">
+                            <i class="fa-solid fa-crown mr-2 text-rosegold"></i> 
+                            {% if user.verification_status == 'pending' %}
+                                На проверке
+                            {% else %}
+                                Цены для профи
+                            {% endif %}
+                        </a>
+                    {% endif %}
+                {% endif %}
+
                 <a href="tel:+79990000000" class="flex items-center">
                     <i class="fa-solid fa-phone mr-2 text-rosegold"></i> +7 (999) 000-00-00
                 </a>
