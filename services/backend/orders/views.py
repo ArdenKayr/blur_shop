@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from .models import OrderItem
+from .models import OrderItem, Order # Добавил импорт Order
 from .forms import OrderCreateForm
 from cart.cart import Cart
 from .tinkoff import TinkoffPayment
@@ -28,6 +28,7 @@ def order_create(request):
             if request.user.is_authenticated:
                 order.user = request.user
             order.total_cost = total_price 
+            # По умолчанию статус уже 'not_processed' (из модели)
             order.save()
 
             order_items_list = []
@@ -99,12 +100,12 @@ def payment_notification(request):
                 order_id = order_id_raw
                 
             status = data.get('Status')
-            from .models import Order 
             
             if status == 'CONFIRMED':
                 order = get_object_or_404(Order, id=order_id)
                 order.paid = True
-                order.status = 'paid'
+                # Статус не меняем, он остается 'not_processed', 
+                # админ увидит галочку 'Оплачено' и сам поменяет статус
                 order.save()
             return HttpResponse("OK", content_type="text/plain")
         except Exception as e:

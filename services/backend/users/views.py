@@ -2,9 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from .forms import RegisterForm, UpgradeRequestForm
+from .models import ProApplication
 
 def register(request):
-    """Регистрация нового пользователя"""
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
@@ -13,34 +13,42 @@ def register(request):
             return redirect('catalog')
     else:
         form = RegisterForm()
-    
     return render(request, 'users/register.html', {'form': form})
 
 @login_required
 def profile(request):
-    """Личный кабинет пользователя"""
     return render(request, 'users/profile.html')
 
 @login_required
 def upgrade_to_pro(request):
-    """Страница подачи заявки на профи"""
-    # Если у пользователя уже есть ВСЕ роли, отправляем его в профиль
+    # Если у пользователя уже есть ВСЕ права, редиректим
     if request.user.is_cosmetologist and request.user.is_manicurist:
         return redirect('profile')
 
     if request.method == 'POST':
-        form = UpgradeRequestForm(request.POST, request.FILES, instance=request.user)
+        # Передаем user в форму
+        form = UpgradeRequestForm(request.user, request.POST, request.FILES)
         if form.is_valid():
-            user = form.save(commit=False)
-            # Сбрасываем статус на "На проверке", чтобы админ увидел новую заявку
-            user.verification_status = 'pending' 
-            user.save()
+            application = form.save(commit=False)
+            application.user = request.user
+            application.save()
+            
+            # Обновляем статус пользователя (для UI)
+            request.user.verification_status = 'pending'
+            request.user.save()
+            
             return render(request, 'users/upgrade_success.html')
     else:
-        form = UpgradeRequestForm(instance=request.user)
+        form = UpgradeRequestForm(request.user)
+    
+    # Если вариантов нет (например, на все роли уже подал), говорим об этом
+    if not form.fields['role'].choices:
+        return render(request, 'users/upgrade_pro.html', {
+            'form': form, 
+            'no_choices': True
+        })
     
     return render(request, 'users/upgrade_pro.html', {'form': form})
 
 def about(request):
-    """Страница О бренде"""
     return render(request, 'users/about.html')
